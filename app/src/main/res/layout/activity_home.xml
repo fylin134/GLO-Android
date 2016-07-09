@@ -16,6 +16,12 @@
         android:text="Edit Posse"
         android:id="@+id/button_editPosse"
         android:layout_gravity="center_horizontal" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test Posse"
+        android:id="@+id/button_testPosse"
+        android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="wrap_content"

@@ -26,6 +26,9 @@
             android:name="hackathon.a3ds.com.glo.HomeActivity"
             android:label="@string/app_name" />
         <activity
+            android:name="hackathon.a3ds.com.glo.contactView"
+            android:label="@string/app_name" />
+        <activity
             android:name="hackathon.a3ds.com.glo.PosseActivity"
             android:label="@string/app_name" />
         <activity
