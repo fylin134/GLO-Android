@@ -39,6 +39,14 @@ public class HomeActivity extends Activity{
                 startActivity(intent);
             }
         });
+
+        btnViewOuting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, OutingViewActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }
