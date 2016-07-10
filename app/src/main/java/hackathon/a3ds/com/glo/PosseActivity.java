@@ -26,11 +26,15 @@ public class PosseActivity extends Activity{
         btnTestPosse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+<<<<<<< HEAD
                 EditText edText1 = (EditText) findViewById(R.id.posse_name);
                 edText1.setInputType(InputType.TYPE_CLASS_TEXT);
                 String str = edText1.getText().toString();
                 Intent intent = new Intent(mContext, contactView.class);
                 intent.putExtra("posse_name",str);
+=======
+                Intent intent = new Intent(mContext, ContactActivity.class);
+>>>>>>> 8da8704e78fb86db9191f1c48aa7a257cd16d244
                 startActivity(intent);
 
             }
