@@ -22,6 +22,7 @@ public class PosseActivity extends Activity{
         setContentView(R.layout.activity_posse);
         final Context mContext = this;
         Button btnTestPosse = (Button) findViewById(R.id.next);
+        Button btnBackPosse = (Button) findViewById(R.id.cancel);
 
         btnTestPosse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +35,14 @@ public class PosseActivity extends Activity{
                 intent.putExtra("posse_name",str);
                 startActivity(intent);
 
+            }
+        });
+
+        btnBackPosse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, HomeActivity.class);
+                startActivity(intent);
             }
         });
     }
