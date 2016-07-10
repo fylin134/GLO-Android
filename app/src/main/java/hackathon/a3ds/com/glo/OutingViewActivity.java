@@ -37,7 +37,8 @@ public class OutingViewActivity extends Activity implements OnMapReadyCallback{
     private String mDestination;
     private String mName;
     private int mHour;
-    private int mMinute;
+    private String mMinute;
+    private String ampm;
 
     public static int REQUEST_CODE = 0;
 
@@ -51,13 +52,16 @@ public class OutingViewActivity extends Activity implements OnMapReadyCallback{
             mDestination = extras.getString("des");
             mName = extras.getString("name");
             mHour = extras.getInt("hour");
-            mMinute = extras.getInt("minute");
+            mMinute = extras.getString("minute");
+            ampm = extras.getString("ampm");
         }
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         String mHomebaseDefault = sharedPref.getString("homebase_default", "Capital Factory");
 
-        ((TextView) findViewById(R.id.outing_name)).setText(mDestination);
+        ((TextView) findViewById(R.id.outing_name)).setText(mName);
         ((TextView) findViewById(R.id.outing_destination)).setText(mDestination);
+        ((TextView) findViewById(R.id.outing_homebase)).setText(mHomebaseDefault);
+        ((TextView) findViewById(R.id.outing_curfew)).setText(""+mHour+":"+mMinute+" "+ampm);
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);

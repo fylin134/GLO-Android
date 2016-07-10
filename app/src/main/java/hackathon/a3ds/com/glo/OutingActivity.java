@@ -39,7 +39,7 @@ import java.util.List;
  * Created by frank on 7/9/16.
  */
 public class OutingActivity extends Activity {
-    // URL for all Slack APIs
+    // URL for backend API
     private static String url = "https://pure-caverns-99011.herokuapp.com/getPosse";
     private JSONArray mUsers;
     private String mJsonString;
@@ -51,6 +51,11 @@ public class OutingActivity extends Activity {
 
     public static final String NODE_MEMBERS = "allPosses";
 
+    TimePicker timePicker1;
+
+    EditText nameTxt;
+    EditText destinationTxt;
+
     @TargetApi(Build.VERSION_CODES.M)
     @Override
 
@@ -60,7 +65,12 @@ public class OutingActivity extends Activity {
         final Context mContext = this;
         Button btnCancelOuting = (Button) findViewById(R.id.cancel);
         Button btnCreateOuting = (Button) findViewById(R.id.create);
-        Button btnMembersOuting = (Button) findViewById(R.id.members);
+        Button btnMembersOuting = (Button) findViewById(R.id.create_members);
+
+        timePicker1 = (TimePicker) findViewById(R.id.timePicker1);
+
+        nameTxt = (EditText) findViewById(R.id.create_name);
+        destinationTxt = (EditText) findViewById(R.id.create_destination);
 
         btnCancelOuting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,18 +90,28 @@ public class OutingActivity extends Activity {
         btnCreateOuting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TimePicker timePicker1;
-                timePicker1 = (TimePicker) findViewById(R.id.timePicker1);
                 int hour = timePicker1.getCurrentHour();
                 int min = timePicker1.getCurrentMinute();
-                EditText nameTxt = (EditText) findViewById(R.id.name);
-                EditText destinationTxt = (EditText) findViewById(R.id.destination);
+
+                String str_min;
+                if(min <= 9)
+                {
+                    str_min = "0" + min;
+                }
+                else{
+                    str_min = ""+min;
+                }
+                String ampm = "AM";
+                if(hour >12){
+                    ampm = "PM";
+                }
                 String str_name = nameTxt.getText().toString();
                 String str_des = destinationTxt.getText().toString();
 
                 Intent intent = new Intent(getApplicationContext(), OutingViewActivity.class);
                 intent.putExtra("hour", hour);
-                intent.putExtra("minute", hour);
+                intent.putExtra("minute", str_min);
+                intent.putExtra("ampm",ampm);
                 intent.putExtra("name", str_name);
                 intent.putExtra("des", str_des);
                 startActivity(intent);
