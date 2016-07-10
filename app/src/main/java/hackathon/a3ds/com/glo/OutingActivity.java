@@ -33,6 +33,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+
 /**
  * Created by frank on 7/9/16.
  */
@@ -44,6 +46,7 @@ public class OutingActivity extends Activity {
     String test = new String();
     ListView listView;
     ArrayList<String> values;
+    final Context mContext = this;
     // Get ListView object from xml
 
     public static final String NODE_MEMBERS = "allPosses";
@@ -153,14 +156,12 @@ public class OutingActivity extends Activity {
             listView = (ListView) findViewById(R.id.listView);
             values = new ArrayList<String>();
             values.add(test);
-            values.add("Jason Brown");
-            values.add("Kelly Hauser");
-            values.add("Frank Lin");
-            values.add("Andrea Martinez");
-            System.out.println(test);
+            System.out.println(values);
             // Update usersList ListView with new parsed JSON data
-            setContentView(R.layout.contacts_table);
-           ListView listView = (ListView) findViewById(R.id.listView);
+
+            Intent intent = new Intent(mContext, HomeActivity.class);
+            intent.putExtra("posse_list", values);
+            startActivity(intent);
             //posList.add("test");
 
         }
