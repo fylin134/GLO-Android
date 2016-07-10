@@ -70,30 +70,40 @@ public class ContactsTable extends Activity {
         // Get ListView object from xml
         listView = (ListView) findViewById(R.id.listView);
 
-        // Defined Array values to show in ListView
-        values = new ArrayList<String>();
-        values.add("Bran");
-        values.add("Hodor");
-        values.add("Tyrion");
-        values.add("Sasha");
-        values.add("Arya");
-        values.add("Shania");
-        values.add("Rickon");
-        values.add("Little_Finger");
-        values.add("Shania");
-        values.add("Varus");
-        values.add("Ramsey");
-        values.add("Daenerys");
-        values.add("Cersei");
+        ArrayList<String> posseList = intent.getStringArrayListExtra("posse_list");
 
-        values.add("Britney");
-        values.add("Christina");
-        values.add("Tiffany");
-        values.add("Christina");
-        values.add("Jewel");
-        values.add("Shania");
-        values.add("Alanis");
-        values.add("Shakira");
+        if(posseList == null || posseList.size() == 0) {
+
+            // Defined Array values to show in ListView
+            values = new ArrayList<String>();
+            values.add("Bran");
+            values.add("Hodor");
+            values.add("Tyrion");
+            values.add("Sasha");
+            values.add("Arya");
+            values.add("Shania");
+            values.add("Rickon");
+            values.add("Little_Finger");
+            values.add("Shania");
+            values.add("Varus");
+            values.add("Ramsey");
+            values.add("Daenerys");
+            values.add("Cersei");
+
+            values.add("Britney");
+            values.add("Christina");
+            values.add("Tiffany");
+            values.add("Christina");
+            values.add("Jewel");
+            values.add("Shania");
+            values.add("Alanis");
+            values.add("Shakira");
+        }else {
+            for (int w = 0; w < posseList.size(); w++){
+                values.add(posseList.get(w));
+            }
+        }
+
 
 //        values.add("Frank");
 //        values.add("Bob");
