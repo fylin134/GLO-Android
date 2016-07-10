@@ -8,6 +8,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
@@ -48,6 +49,16 @@ public class restHandler {
                 httpResponse = httpClient.execute(httpGet);
             }
             if(method == POST){
+
+                if(params != null){
+                    String paramString = URLEncodedUtils.format(params, "utf-8");
+                    //String name = URLEncodedUtils.format(params.get(0).getName(), "utf-8");
+                    url += "?posseName="+params.get(0).getName()+"&members="+params.get(0).getValue();
+                    //url += "?" + paramString;
+                }
+                System.out.println("url "+ url);
+                HttpPost httpPost = new HttpPost(url);
+                httpResponse = httpClient.execute(httpPost);
                 //TODO - can be built for future revs
             }
 

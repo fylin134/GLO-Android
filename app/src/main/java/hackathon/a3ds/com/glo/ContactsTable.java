@@ -4,16 +4,36 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -21,6 +41,16 @@ import java.util.List;
  * Created by matcurtis on 7/9/16.
  */
 public class ContactsTable extends Activity {
+
+
+    // URL for all Slack APIs
+    private static String url = "https://pure-caverns-99011.herokuapp.com/createPosse";
+    //private static String url = "https://www.google.com";
+
+    private static String posseName;
+
+    private static String posseMembers;
+    private String mJsonString;
 
     ListView listView;
     TextView name;
@@ -40,13 +70,15 @@ public class ContactsTable extends Activity {
 
         // Defined Array values to show in ListView
         values = new ArrayList<String>();
-        values.add("Android List View");
-        values.add("Adapter implementation");
-        values.add("Simple List View In Android");
-        values.add("Create List View Android");
-        values.add("Android Example");
-        values.add("List View Source Code");
-        values.add("List View Array Adapter");
+        values.add("Frank");
+        values.add("Bob");
+        values.add("Toph");
+        values.add("Matthew");
+        values.add("Alex");
+        values.add("Farmer");
+        values.add("John");
+        values.add("Flee");
+        values.add("That");
 
         // Define a new Adapter
         // First parameter - Context
@@ -85,10 +117,10 @@ public class ContactsTable extends Activity {
 
         });
 
-        final String posse_name = intent.getStringExtra("posse_name");
+        posseName = intent.getStringExtra("posse_name");
 
         name = (TextView) findViewById(R.id.nameTextView);
-        name.setText(posse_name);
+        name.setText(posseName);
 
         Button btnDone = (Button) findViewById(R.id.done);
         btnSAN = (Button) findViewById(R.id.selectAllNone);
@@ -97,9 +129,10 @@ public class ContactsTable extends Activity {
             @Override
             public void onClick(View view) {
 
-                Write(posse_name);
+                Write(posseName);
+                //https://pure-caverns-99011.herokuapp.com/
                 Intent intent = new Intent(ContactsTable.this, HomeActivity.class);
-                intent.putExtra("posse_name", posse_name);
+                intent.putExtra("posse_name", posseName);
                 startActivity(intent);
             }
         });
@@ -127,15 +160,20 @@ public class ContactsTable extends Activity {
     public void Write(String name) {
 
 
+
         SharedPreferences sharedPref = ContactsTable.this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < finValues.size(); i++) {
-            sb.append(finValues.get(i) + ",");
+        for (int i = 0; i < finValues.size()-1; i++) {
+            sb.append(finValues.get(i) + "%2C");
         }
-        editor.putString(name, sb.toString());
+        sb.append(finValues.get(finValues.size()-1));
+        editor.putString(posseName, sb.toString());
+        posseMembers = sb.toString();
         editor.commit();
         System.out.println("sb "+sb.toString());
+
+        new postPosse().execute();
 
         SharedPreferences sharedPre = ContactsTable.this.getPreferences(Context.MODE_PRIVATE);
         //int defaultValue = getResources().getInteger(R.string.saved_high_score_default);
@@ -147,4 +185,49 @@ public class ContactsTable extends Activity {
             System.out.println("elephantList.get("+i+") "+ elephantList.get(i));
         }
     }
+
+
+/***
+ * Async task to make Slack users.list HTTP call
+ */
+private class postPosse extends AsyncTask<Void, Void, Void> {
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        //TODO: Cool loading graphic
+    }
+
+    @Override
+    protected Void doInBackground(Void... args) {
+        restHandler restHandler = new restHandler();
+
+        // Make HTTP call with params
+        List<NameValuePair> params = new LinkedList<NameValuePair>();
+        params.add(new BasicNameValuePair(posseName, posseMembers));
+        mJsonString = restHandler.makeCall(url, restHandler.POST, params);
+System.out.println("mJsonString "+mJsonString.toString());
+
+//        HttpClient httpclient = new DefaultHttpClient();
+//        HttpPost httppost = new HttpPost("https://pure-caverns-99011.herokuapp.com/createPosse");
+//        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+//        nameValuePairs.add(new BasicNameValuePair(posseName, posseMembers));
+////put here in nameValuePairs request parameters
+//try {
+//    UrlEncodedFormEntity form;
+//    form = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
+//    form.setContentEncoding(HTTP.UTF_8);
+//    httppost.setEntity(form);
+//
+//    HttpResponse response = httpclient.execute(httppost);
+//    System.out.println("mJsonString "+response.getEntity().getContent().toString());
+//}catch (IOException e){
+//    System.out.println("IOException "+e);
+//}
+
+        return null;
+    }
+
+}
+
 }
