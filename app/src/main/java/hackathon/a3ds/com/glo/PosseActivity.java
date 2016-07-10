@@ -22,7 +22,7 @@ public class PosseActivity extends Activity{
         btnTestPosse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, contactView.class);
+                Intent intent = new Intent(mContext, ContactActivity.class);
                 startActivity(intent);
             }
         });
