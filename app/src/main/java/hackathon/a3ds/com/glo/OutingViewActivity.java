@@ -2,6 +2,7 @@ package hackathon.a3ds.com.glo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -9,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -32,12 +34,30 @@ public class OutingViewActivity extends Activity implements OnMapReadyCallback{
 
     private LatLng mUserLoc;
 
+    private String mDestination;
+    private String mName;
+    private int mHour;
+    private int mMinute;
+
     public static int REQUEST_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outing_view);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            mDestination = extras.getString("des");
+            mName = extras.getString("name");
+            mHour = extras.getInt("hour");
+            mMinute = extras.getInt("minute");
+        }
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        String mHomebaseDefault = sharedPref.getString("homebase_default", "Capital Factory");
+
+        ((TextView) findViewById(R.id.outing_name)).setText(mDestination);
+        ((TextView) findViewById(R.id.outing_destination)).setText(mDestination);
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);

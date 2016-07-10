@@ -86,7 +86,12 @@ public class OutingActivity extends Activity {
                 String str_name = nameTxt.getText().toString();
                 String str_des = destinationTxt.getText().toString();
 
-                setContentView(R.layout.activity_posse);
+                Intent intent = new Intent(getApplicationContext(), OutingViewActivity.class);
+                intent.putExtra("hour", hour);
+                intent.putExtra("minute", hour);
+                intent.putExtra("name", str_name);
+                intent.putExtra("des", str_des);
+                startActivity(intent);
             }
         });
         btnMembersOuting.setOnClickListener(new View.OnClickListener() {

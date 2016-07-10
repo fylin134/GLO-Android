@@ -13,42 +13,52 @@
         android:name="com.google.android.gms.maps.MapFragment"
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="700dp"
+        android:layout_height="500dp"
         android:layout_centerInParent="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="HomeBase"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/textView2" />
+        android:id="@+id/outing_name" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Capital Factory"
-        android:id="@+id/text_homebase"
-        android:layout_below="@+id/textView2"
+        android:id="@+id/outing_destination"
+        android:layout_below="@id/outing_name"
         android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Curfew: "
-        android:id="@+id/text_curfew"
+        android:id="@+id/outing_curfew"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/text_homebase" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="01:00 AM"
-        android:id="@+id/text_curfew_time"
-        android:layout_alignTop="@+id/text_curfew"
-        android:layout_toEndOf="@+id/text_homebase" />
+        android:text="Curfew"
+        android:id="@+id/textView2"
+        android:layout_above="@+id/outing_curfew"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/outing_homebase"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HomeBase"
+        android:id="@+id/textView4"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

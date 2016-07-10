@@ -3,7 +3,9 @@ package hackathon.a3ds.com.glo;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -113,6 +115,13 @@ public class RegisterActivity extends AppCompatActivity {
         userObject.put("phone",mValues[INDEX_PHONE]);
         userObject.put("pin", mValues[INDEX_PIN]);
         userObject.put("homebase", mValues[INDEX_HOMEBASE]);
+
+        // Save default homebase
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("homebase_default", mValues[INDEX_HOMEBASE]);
+        editor.commit();
+
 
         userObject.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
