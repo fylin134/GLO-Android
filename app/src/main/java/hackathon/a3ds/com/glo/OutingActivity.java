@@ -18,10 +18,21 @@ public class OutingActivity extends Activity {
         setContentView(R.layout.activity_outing);
         final Context mContext = this;
         Button btnCancelOuting = (Button) findViewById(R.id.cancel);
+        Button btnCreateOuting = (Button) findViewById(R.id.create);
+        Button btnMembersOuting = (Button) findViewById(R.id.members);
+
         btnCancelOuting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnCreateOuting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, OutingViewActivity.class);
                 startActivity(intent);
             }
         });
