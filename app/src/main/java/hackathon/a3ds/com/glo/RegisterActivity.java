@@ -3,6 +3,7 @@ package hackathon.a3ds.com.glo;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -39,12 +40,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-        Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                .applicationId("3DSGLOBALROUNDUP")
-                .server("https://pure-caverns-99011.herokuapp.com/parse/")
-                .build()
-        );
 
         mProgressView = findViewById(R.id.register_progress);
 
@@ -109,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerUser(){
-        //showProgress(true);
+        showProgress(true);
         System.out.println("*************START PARSE*******************");
         ParseUser userObject = new ParseUser();
         userObject.setUsername(mValues[INDEX_USERNAME]);
@@ -124,11 +119,26 @@ public class RegisterActivity extends AppCompatActivity {
                 if (e == null) {
                     // Hooray! Let them use the app now.
                     System.out.println("***********NO PARSE ERROR************");
-                   // showProgress(false);
+                    showProgress(false);
+                    finish();
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivity(intent);
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
                     System.out.println(e.getCode());
+                    switch(e.getCode()){
+                        case ParseException.INVALID_EMAIL_ADDRESS:
+                            Toast.makeText(getApplicationContext(), "Invalid Email Address", Toast.LENGTH_SHORT).show();
+                            break;
+                        case ParseException.EMAIL_TAKEN:
+                            Toast.makeText(getApplicationContext(), "An account with this email already exists.", Toast.LENGTH_SHORT).show();
+                            break;
+                        case ParseException.USERNAME_TAKEN:
+                            Toast.makeText(getApplicationContext(), "This username is already taken!", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                    showProgress(false);
                 }
             }
         });

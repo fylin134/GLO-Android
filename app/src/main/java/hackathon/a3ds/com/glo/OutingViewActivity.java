@@ -30,6 +30,8 @@ public class OutingViewActivity extends Activity implements OnMapReadyCallback{
     private LocationManager mLocationManager;
     private ArrayList<LatLng> mPosseLocations;
 
+    private LatLng mUserLoc;
+
     public static int REQUEST_CODE = 0;
 
     @Override
@@ -58,7 +60,6 @@ public class OutingViewActivity extends Activity implements OnMapReadyCallback{
         };
 
         mPosseMarkers = new ArrayList<Marker>();
-        mPosseLocations = new ArrayList<LatLng>();
 
         if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
 
@@ -68,7 +69,7 @@ public class OutingViewActivity extends Activity implements OnMapReadyCallback{
         // Register the listener with the Location Manager to receive location updates
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         Location lastKnownLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        mPosseLocations.add(new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()));
+        mUserLoc = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
     }
 
     /***
@@ -87,7 +88,7 @@ public class OutingViewActivity extends Activity implements OnMapReadyCallback{
                 .title("Marker")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
         mPosseMarkers.add(self);
-        LatLng loc = mPosseLocations.get(0);
+        LatLng loc = mUserLoc;
         if(loc != null){
             self.setPosition(loc);
 
@@ -98,5 +99,25 @@ public class OutingViewActivity extends Activity implements OnMapReadyCallback{
         // Pan and zoom map to current location
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(loc, 15));
         googleMap.animateCamera(cameraUpdate);
+
+        ArrayList<LatLng> outingLocs = getOutingMembers();
+        for(LatLng l : outingLocs){
+            Marker m = googleMap.addMarker(new MarkerOptions()
+                    .position(l)
+                    .title("Marker")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
+            mPosseMarkers.add(m);
+        }
+    }
+
+    private ArrayList<LatLng> getOutingMembers(){
+        //TODO: get outing members from backend push
+
+        ArrayList<LatLng> locs = new ArrayList<LatLng>();
+
+        locs.add(new LatLng(30.262311, -97.746864));
+        locs.add(new LatLng(30.267036, -97.739740));
+
+        return locs;
     }
 }
