@@ -99,7 +99,9 @@ public class ContactsTable extends Activity {
             values.add("Alanis");
             values.add("Shakira");
         }else {
-            values = posseList;
+            for (int w = 0; w < posseList.size(); w++){
+                values.add(posseList.get(w));
+            }
         }
 
 
