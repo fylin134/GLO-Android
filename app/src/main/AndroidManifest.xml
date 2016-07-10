@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -18,7 +18,8 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBG4u5EmPsOT_kC5_NqzyvdRBjpHiR5RTQ"/>
+            android:value="AIzaSyBG4u5EmPsOT_kC5_NqzyvdRBjpHiR5RTQ" />
+
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name">
@@ -28,13 +29,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity"/>
-        <activity android:name=".PosseActivity"></activity>
-        <activity android:name=".OutingActivity"></activity>
-        <activity android:name=".OutingViewActivity"></activity>
-        <activity android:name=".ContactActivity"></activity>
-        <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".ContactsTable"></activity>
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".PosseActivity" />
+        <activity android:name=".OutingActivity" />
+        <activity android:name=".OutingViewActivity" />
+        <activity android:name=".ContactActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".ContactsTable" />
+        <activity android:name=".AddMembers"></activity>
     </application>
 
 </manifest>
