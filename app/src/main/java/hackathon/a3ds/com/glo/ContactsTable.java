@@ -99,7 +99,7 @@ public class ContactsTable extends Activity {
 
                 Write(posse_name);
                 Intent intent = new Intent(ContactsTable.this, HomeActivity.class);
-                intent.putExtra("posse_members", finValues);
+                intent.putExtra("posse_name", posse_name);
                 startActivity(intent);
             }
         });
