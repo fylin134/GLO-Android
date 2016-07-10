@@ -18,7 +18,7 @@ public class restHandler {
     public final static int GET = 0;
     public final static int POST = 1;
 
-    public void RestHandler(){
+    public restHandler(){
 
     }
 
