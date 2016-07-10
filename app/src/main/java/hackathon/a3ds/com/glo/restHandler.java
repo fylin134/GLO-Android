@@ -3,8 +3,6 @@ package hackathon.a3ds.com.glo;
 /**
  * Created by Zaid_Sofia on 7/10/2016.
  */
-import android.os.AsyncTask;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -17,50 +15,36 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.List;
+public class restHandler {
+    public final static int GET = 0;
+    public final static int POST = 1;
 
+    public restHandler(){
 
-    public class restHandler {
-        public final static int GET = 0;
-        public final static int POST = 1;
+    }
 
-        public restHandler() {
+    /***
+     * Makes a HTTP call
+     * @param url - String representation of the url of http call
+     * @param method - integer representing whether the call is a GET,POST,etc.
+     * @param params - additional parameters for the call
+     * @return - a String representation of the http response
+     */
+    public String makeCall(String url, int method, List<NameValuePair> params){
+        String response = null;
+        try{
+            // http Client
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpEntity httpEntity = null;
+            HttpResponse httpResponse = null;
 
-        }
-
-        /***
-         * Makes a HTTP call
-         *
-         * @param url    - String representation of the url of http call
-         * @param method - integer representing whether the call is a GET,POST,etc.
-         * @param params - additional parameters for the call
-         * @return - a String representation of the http response
-         */
-        public String makeCall(String url, int method, List<NameValuePair> params) {
-            String response = null;
-            try {
-                // http Client
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpEntity httpEntity = null;
-                HttpResponse httpResponse = null;
-
-                if (method == GET) {
-                    // Append params to API call
-                    if (params != null) {
-                        String paramString = URLEncodedUtils.format(params, "utf-8");
-                        url += "?" + paramString;
-                    }
-
-                    HttpGet httpGet = new HttpGet(url);
-                    httpResponse = httpClient.execute(httpGet);
-                }
-                if (method == POST) {
-                    //TODO - can be built for future revs
+            if(method == GET){
+                // Append params to API call
+                if(params != null){
+                    String paramString = URLEncodedUtils.format(params, "utf-8");
+                    url += "?" + paramString;
                 }
 
-<<<<<<< HEAD
-                httpEntity = httpResponse.getEntity();
-                response = EntityUtils.toString(httpEntity);
-=======
                 HttpGet httpGet = new HttpGet(url);
                 httpResponse = httpClient.execute(httpGet);
             }
@@ -77,15 +61,16 @@ import java.util.List;
                 httpResponse = httpClient.execute(httpPost);
                 //TODO - can be built for future revs
             }
->>>>>>> 285b509657692886f6fe8fc78d4d87106f4e37c7
 
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            httpEntity = httpResponse.getEntity();
+            response = EntityUtils.toString(httpEntity);
 
-            return response;
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
 
+        return response;
+    }
+}
