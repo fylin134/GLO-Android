@@ -16,14 +16,14 @@
         android:id="@+id/editText"
         android:layout_gravity="center"
         android:hint="Name"
-        android:layout_above="@+id/members"
+        android:layout_above="@+id/name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Members"
+        android:text="Add Members"
         android:id="@+id/members"
         android:background="#fff"
         android:gravity="center_horizontal"
@@ -42,7 +42,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/destinationText"
+        android:id="@+id/destination"
         android:hint="Destination"
         android:layout_above="@+id/create"/>
 
