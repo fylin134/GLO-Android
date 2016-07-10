@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -35,6 +36,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -70,15 +72,42 @@ public class ContactsTable extends Activity {
 
         // Defined Array values to show in ListView
         values = new ArrayList<String>();
-        values.add("Frank");
-        values.add("Bob");
-        values.add("Toph");
-        values.add("Matthew");
-        values.add("Alex");
-        values.add("Farmer");
-        values.add("John");
-        values.add("Flee");
-        values.add("That");
+        values.add("Bran");
+        values.add("Hodor");
+        values.add("Tyrion");
+        values.add("Sasha");
+        values.add("Arya");
+        values.add("Shania");
+        values.add("Rickon");
+        values.add("Little_Finger");
+        values.add("Shania");
+        values.add("Varus");
+        values.add("Ramsey");
+        values.add("Daenerys");
+        values.add("Cersei");
+
+        values.add("Britney");
+        values.add("Christina");
+        values.add("Tiffany");
+        values.add("Christina");
+        values.add("Jewel");
+        values.add("Shania");
+        values.add("Alanis");
+        values.add("Shakira");
+
+//        values.add("Frank");
+//        values.add("Bob");
+//        values.add("Toph");
+//        values.add("Matthew");
+//        values.add("Alex");
+//        values.add("Bran");
+//        values.add("John");
+//        values.add("Aegon_The_Conquer");
+//        values.add("T");
+//        values.add("Farmer");
+//        values.add("John");
+//        values.add("Flee");
+//        values.add("That");
 
         // Define a new Adapter
         // First parameter - Context
@@ -107,10 +136,11 @@ public class ContactsTable extends Activity {
 
                 addName(itemValue);
 
+                view.setBackgroundColor(Color.GREEN);
 
                 // Show Alert
                 Toast.makeText(getApplicationContext(),
-                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_SHORT)
+                        "Added : " + itemValue, Toast.LENGTH_SHORT)
                         .show();
 
             }
@@ -159,24 +189,17 @@ public class ContactsTable extends Activity {
     }
     public void Write(String name) {
 
-
-
-        SharedPreferences sharedPref = ContactsTable.this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < finValues.size()-1; i++) {
             sb.append(finValues.get(i) + "%2C");
         }
         sb.append(finValues.get(finValues.size()-1));
-        editor.putString(posseName, sb.toString());
         posseMembers = sb.toString();
-        editor.commit();
         System.out.println("sb "+sb.toString());
 
         new postPosse().execute();
 
         SharedPreferences sharedPre = ContactsTable.this.getPreferences(Context.MODE_PRIVATE);
-        //int defaultValue = getResources().getInteger(R.string.saved_high_score_default);
         String temp = sharedPre.getString(name,"");
         System.out.println("temp : "+ temp);
 
@@ -206,24 +229,7 @@ private class postPosse extends AsyncTask<Void, Void, Void> {
         List<NameValuePair> params = new LinkedList<NameValuePair>();
         params.add(new BasicNameValuePair(posseName, posseMembers));
         mJsonString = restHandler.makeCall(url, restHandler.POST, params);
-System.out.println("mJsonString "+mJsonString.toString());
-
-//        HttpClient httpclient = new DefaultHttpClient();
-//        HttpPost httppost = new HttpPost("https://pure-caverns-99011.herokuapp.com/createPosse");
-//        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-//        nameValuePairs.add(new BasicNameValuePair(posseName, posseMembers));
-////put here in nameValuePairs request parameters
-//try {
-//    UrlEncodedFormEntity form;
-//    form = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
-//    form.setContentEncoding(HTTP.UTF_8);
-//    httppost.setEntity(form);
-//
-//    HttpResponse response = httpclient.execute(httppost);
-//    System.out.println("mJsonString "+response.getEntity().getContent().toString());
-//}catch (IOException e){
-//    System.out.println("IOException "+e);
-//}
+        System.out.println("mJsonString "+mJsonString.toString());
 
         return null;
     }
