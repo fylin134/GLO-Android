@@ -4,23 +4,55 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
  * Created by matcurtis on 7/9/16.
  */
 public class ContactsTable extends Activity {
+
+
+    // URL for all Slack APIs
+    private static String url = "https://pure-caverns-99011.herokuapp.com/createPosse";
+    //private static String url = "https://www.google.com";
+
+    private static String posseName;
+
+    private static String posseMembers;
+    private String mJsonString;
 
     ListView listView;
     TextView name;
@@ -40,13 +72,42 @@ public class ContactsTable extends Activity {
 
         // Defined Array values to show in ListView
         values = new ArrayList<String>();
-        values.add("Android List View");
-        values.add("Adapter implementation");
-        values.add("Simple List View In Android");
-        values.add("Create List View Android");
-        values.add("Android Example");
-        values.add("List View Source Code");
-        values.add("List View Array Adapter");
+        values.add("Bran");
+        values.add("Hodor");
+        values.add("Tyrion");
+        values.add("Sasha");
+        values.add("Arya");
+        values.add("Shania");
+        values.add("Rickon");
+        values.add("Little_Finger");
+        values.add("Shania");
+        values.add("Varus");
+        values.add("Ramsey");
+        values.add("Daenerys");
+        values.add("Cersei");
+
+        values.add("Britney");
+        values.add("Christina");
+        values.add("Tiffany");
+        values.add("Christina");
+        values.add("Jewel");
+        values.add("Shania");
+        values.add("Alanis");
+        values.add("Shakira");
+
+//        values.add("Frank");
+//        values.add("Bob");
+//        values.add("Toph");
+//        values.add("Matthew");
+//        values.add("Alex");
+//        values.add("Bran");
+//        values.add("John");
+//        values.add("Aegon_The_Conquer");
+//        values.add("T");
+//        values.add("Farmer");
+//        values.add("John");
+//        values.add("Flee");
+//        values.add("That");
 
         // Define a new Adapter
         // First parameter - Context
@@ -75,20 +136,21 @@ public class ContactsTable extends Activity {
 
                 addName(itemValue);
 
+                view.setBackgroundColor(Color.GREEN);
 
                 // Show Alert
                 Toast.makeText(getApplicationContext(),
-                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_SHORT)
+                        "Added : " + itemValue, Toast.LENGTH_SHORT)
                         .show();
 
             }
 
         });
 
-        final String posse_name = intent.getStringExtra("posse_name");
+        posseName = intent.getStringExtra("posse_name");
 
         name = (TextView) findViewById(R.id.nameTextView);
-        name.setText(posse_name);
+        name.setText(posseName);
 
         Button btnDone = (Button) findViewById(R.id.done);
         btnSAN = (Button) findViewById(R.id.selectAllNone);
@@ -97,9 +159,10 @@ public class ContactsTable extends Activity {
             @Override
             public void onClick(View view) {
 
-                Write(posse_name);
+                Write(posseName);
+                //https://pure-caverns-99011.herokuapp.com/
                 Intent intent = new Intent(ContactsTable.this, HomeActivity.class);
-                intent.putExtra("posse_name", posse_name);
+                intent.putExtra("posse_name", posseName);
                 startActivity(intent);
             }
         });
@@ -126,19 +189,17 @@ public class ContactsTable extends Activity {
     }
     public void Write(String name) {
 
-
-        SharedPreferences sharedPref = ContactsTable.this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < finValues.size(); i++) {
-            sb.append(finValues.get(i) + ",");
+        for (int i = 0; i < finValues.size()-1; i++) {
+            sb.append(finValues.get(i) + "%2C");
         }
-        editor.putString(name, sb.toString());
-        editor.commit();
+        sb.append(finValues.get(finValues.size()-1));
+        posseMembers = sb.toString();
         System.out.println("sb "+sb.toString());
 
+        new postPosse().execute();
+
         SharedPreferences sharedPre = ContactsTable.this.getPreferences(Context.MODE_PRIVATE);
-        //int defaultValue = getResources().getInteger(R.string.saved_high_score_default);
         String temp = sharedPre.getString(name,"");
         System.out.println("temp : "+ temp);
 
@@ -147,4 +208,32 @@ public class ContactsTable extends Activity {
             System.out.println("elephantList.get("+i+") "+ elephantList.get(i));
         }
     }
+
+
+/***
+ * Async task to make Slack users.list HTTP call
+ */
+private class postPosse extends AsyncTask<Void, Void, Void> {
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        //TODO: Cool loading graphic
+    }
+
+    @Override
+    protected Void doInBackground(Void... args) {
+        restHandler restHandler = new restHandler();
+
+        // Make HTTP call with params
+        List<NameValuePair> params = new LinkedList<NameValuePair>();
+        params.add(new BasicNameValuePair(posseName, posseMembers));
+        mJsonString = restHandler.makeCall(url, restHandler.POST, params);
+        System.out.println("mJsonString "+mJsonString.toString());
+
+        return null;
+    }
+
+}
+
 }
